@@ -34,6 +34,9 @@ gem 'jbuilder', '~> 2.5'
 gem 'omniauth'
 gem 'omniauth-wechat-oauth2'
 
+# weixin
+gem 'weixin_authorize'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug', platform: :mri
