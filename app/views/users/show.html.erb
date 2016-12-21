@@ -1,3 +1,66 @@
+<%= javascript_include_tag '//res.wx.qq.com/open/js/jweixin-1.0.0.js' %>
+<% sign_package = WeixinAuthorize::Client.new(ENV['WECHAT_KEY'], ENV['WECHAT_SECRET']).get_jssign_package(request.url) %>
+
+<script>
+  wx.config({
+    debug: false,
+    appId: "<%= sign_package['appId'] %>",
+    timestamp: "<%= sign_package['timestamp'] %>",
+    nonceStr: "<%= sign_package['nonceStr'] %>",
+    signature: "<%= sign_package['signature'] %>",
+    jsApiList: [
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage',
+      'onMenuShareQQ',
+      'onMenuShareWeibo',
+      'hideMenuItems',
+      'showMenuItems',
+      'hideAllNonBaseMenuItem',
+      'showAllNonBaseMenuItem',
+      'translateVoice',
+      'startRecord',
+      'stopRecord',
+      'onRecordEnd',
+      'playVoice',
+      'pauseVoice',
+      'stopVoice',
+      'uploadVoice',
+      'downloadVoice',
+      'chooseImage',
+      'previewImage',
+      'uploadImage',
+      'downloadImage',
+      'getNetworkType'
+    ]
+  });
+
+  wx.ready(function () {
+    $('img').click(function () {
+      var img_src = $(this).prop("src");
+      wx.previewImage({
+        current: img_src,
+        urls: [img_src]
+      });
+    });
+
+		wx.onMenuShareAppMessage({
+      title: "<%= @user.name %>",
+      desc: '这是我的用户',
+      link: "<%= user_path(@user) %>",
+      imgUrl: "<%= @user.avatar %>",
+    });
+    wx.onMenuShareTimeline({
+      title: "这是测试微信JSSKD的分享",
+      link: "<%= user_path(@user) %>",
+      imgUrl: "<%= @user.avatar %>",
+    });
+  });
+
+  wx.error(function (res) {
+    // alert(res);
+  });
+</script>
+
 <div class="user-show">
   <p>
     <strong> Login Successfully! </strong>
